@@ -6,3 +6,5 @@ pandas
 google
 streamlit
 python-dotenv
+newspaper3k
+lxml[html_clean]

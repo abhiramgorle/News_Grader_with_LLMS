@@ -7,8 +7,8 @@ import json
 import streamlit as st
 from dotenv import load_dotenv
 import os
+from newspaper import Article
 
-gemini_api = "AIzaSyDKdCmbgQGJyg2lKBjQWJUShef1uj_5ss8"
 
 load_dotenv()
 keymain = os.getenv("OpenAI_api_key")
@@ -642,30 +642,56 @@ A path to a more normal economic situation could emerge soon. The data about to 
 #https://www.bbc.com/news/business-66636403
 #https://www.bbc.com/news/business-66755407
 
-
-#streamlit app
+def extract_text_from_url(url):
+    """
+    Extracts text content from a given URL using the newspaper3k library.
+    """
+    try:
+        article = Article(url)
+        article.download()
+        article.parse()
+        return article.text
+    except Exception as e:
+        st.error(f"Error extracting text from URL: {e}")
+        return ""
+ 
 def main():
     st.title("Grade Your News Article")
     st.write("This is a small prototype for building LLMs that can “grade the news” by ")
     st.write("&nbsp;&nbsp;&nbsp;&nbsp;(a) identifying logical fallacies contained in individual news stories, and ")
     st.write("&nbsp;&nbsp;&nbsp;&nbsp;(b) identifying verifiable predictions that have been made in the past and then checking whether they panned out.")
 
-    news_article = st.text_area("Paste the news article here", height=200)
+    input_type = st.radio("Choose input method", ["Paste Article Text", "Provide Article URL"])
+    news_article = ""
+    if input_type == "Paste Article Text":
+        news_article = st.text_area("Paste the news article here", height=200)
+    else:
+        url = st.text_input("Enter the URL of the news article")
+        if st.button("Extract Text from URL") and url:
+            with st.spinner("Extracting text from URL..."):
+                extracted_text = extract_text_from_url(url)
+                if extracted_text:
+                    st.success("Text extracted successfully!")
+                    st.text_area("Extracted Article Text", value=extracted_text, height=200)
+                    news_article = extracted_text
+
     type_of_llm = st.selectbox("Select type of LLM you want to use", ["OpenAI GPT-4", "Google Gemini"])
     year_of_article = st.selectbox("Select the year of the article", ["2024","2023", "2022", "2021", "2020"])
 
     if type_of_llm == "OpenAI GPT-4":
         try :
-            if st.button("grade the news article"):
+            if st.button("Get the Predictions"):
                 with st.spinner("Processing..."):
                     
                     analz = []
+                    news_article =  extract_text_from_url(url) if input_type == "Provide Article URL" else news_article
                     jsosn = openai_extract_predictions(news_article)
                     
                     somethi = openai_verify_prediction(jsosn['predictions'],year_of_article)
                     st.write("Predictions and Justifications done ✅ ")
-                    fallacies_detected = detect_fallacies(news_article)
-                    st.write("Fallacies Detected✅ ")
+                    # fallacies_detected = detect_fallacies(news_article)
+                    # st.write("Fallacies Detected✅ ")
+                    # st.write(fallacies_detected["fallacies"])
                     for j in range(max(len(jsosn["predictions"]), len(somethi))):
                         pred_text = jsosn["predictions"][j] if j < len(jsosn["predictions"]) else "(Missing prediction)"
                         pred_key = f'prediction{j+1}'
@@ -682,31 +708,35 @@ def main():
                             "Outcome": outcome,
                             "Justification": justification
                         })
-                    grade = grade_news(news_article,fallacies_detected["fallacies"],analz)
-                    grade_num = grade["Grade"]
-                    st.success(f"Grade: {grade_num} /5")
+
+                    # st.write(analz)
+                    # grade = grade_news(news_article,fallacies_detected["fallacies"],analz)
+                    # st.write("Grading DOne ✅ ")
+                    # grade_num = grade["Grade"]
+                    # st.success(f"Grade: {grade_num} /5")
                     df = pd.DataFrame(analz, columns=["Prediction", "Outcome", "Justification"])
                     
                     st.write("Predictions and Outcomes:")
                     st.dataframe(df, use_container_width=False)
-                    st.write("Fallacies Detected:")
-                    st.dataframe(fallacies_detected["fallacies"], use_container_width=False)
+                    # st.write("Fallacies Detected:")
+                    # st.dataframe(fallacies_detected["fallacies"], use_container_width=False)
         except Exception as e:
             st.error(f"Error grading the news article: {e}")
     elif type_of_llm == "Google Gemini":
         
         try :
 
-            if st.button("grade the news article"):
+            if st.button("Get the Predictions"):
                 with st.spinner("Processing..."):
                     
                     analz = []
+                    news_article =  extract_text_from_url(url) if input_type == "Provide Article URL" else news_article
                     jsosn = gemini_extract_predictions(news_article)
                     
                     somethi = gemini_verify_predictions(jsosn['predictions'],year_of_article)
                     st.write("Predictions and Justifications done ✅ ")
-                    fallacies_detected = detect_fallacies(news_article)
-                    st.write("Fallacies Detected✅ ")
+                    # fallacies_detected = detect_fallacies(news_article)
+                    # st.write("Fallacies Detected✅ ")
                     for j in range(max(len(jsosn["predictions"]), len(somethi))):
                         pred_text = jsosn["predictions"][j] if j < len(jsosn["predictions"]) else "(Missing prediction)"
                         pred_key = f'prediction{j+1}'
@@ -723,15 +753,15 @@ def main():
                             "Outcome": outcome,
                             "Justification": justification
                         })
-                    grade = gemini_grade_news(news_article,fallacies_detected["fallacies"],analz)
-                    grade_num = grade["Grade"]
-                    st.success(f"Grade: {grade_num} /5")
+                    # grade = gemini_grade_news(news_article,fallacies_detected["fallacies"],analz)
+                    # grade_num = grade["Grade"]
+                    # st.success(f"Grade: {grade_num} /5")
                     df = pd.DataFrame(analz, columns=["Prediction", "Outcome", "Justification"])
                     
                     st.write("Predictions and Outcomes:")
                     st.dataframe(df, use_container_width=False)
-                    st.write("Fallacies Detected:")
-                    st.dataframe(fallacies_detected["fallacies"], use_container_width=False)
+                    # st.write("Fallacies Detected:")
+                    # st.dataframe(fallacies_detected["fallacies"], use_container_width=False)
         except Exception as e:
             st.error(f"Error grading the news article: {e}")
 
