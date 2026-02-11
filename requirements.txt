@@ -1,5 +1,3 @@
-google-api-core
-google-genai
 openai
 numpy
 pandas
@@ -7,4 +5,7 @@ google
 streamlit
 python-dotenv
 newspaper3k
+langchain
+tiktoken
 lxml[html_clean]
+openpyxl

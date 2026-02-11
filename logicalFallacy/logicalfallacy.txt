@@ -1,0 +1,269 @@
+So, what is a logical fallacy?
+ In short, it’s what’s often happened when someone is wrong about something.
+ In slightly longer than short, it’s a flaw in thinking where something doesn’t make sense or ‘doesn’t follow’ logically. 
+People will often commit logical fallacies as a way to trick others into believing that they have a good argument when 
+they don’t, but with the information in the following pages stored safely in your brain, you will become impervious to 
+such tricks for the rest of your whole entire life!
+ If you spot someone committing a logical fallacy online, link them to the fallacy they’ve committed at  
+www.yourlogicalfallacyis.com, and if you want a free poster with all these fallacies you can download 
+one from the same website.
+ 
+strawman
+ You misrepresented someone’s argument to make it easier to attack.
+ The strawman fallacy belongs to the ‘red herring’ group of fallacies which are so-named because they have the 
+purpose of ‘throwing one off the scent’. By exaggerating, misrepresenting, or just completely fabricating someone’s 
+argument, it’s much easier to present your own position as being reasonable or valid. This kind of dishonesty not 
+only undermines rational discourse, it also harms your own position because it brings your credibility into question - if you’re willing to misrepresent your opponent’s argument in the negative, might you also be willing to exaggerate 
+your own in the positive? 
+Example: After Will said that we should put more money into health and education, Warren 
+responded by saying that he was surprised that Will hates our country so much that he wants to 
+leave it defenceless by cutting military spending.
+ 
+false cause
+ You presumed that a real or perceived relationship between things means that one is 
+the cause of the other.
+ One such mistake in thinking is the ‘cum hoc ergo propter hoc’ (with this, therefore because of this) fallacy in which 
+someone presumes that because things are happening together that one thing is therefore the cause of the other. 
+The mistake lies in ignoring the possibility that there may be a common cause to both things happening, or, as per 
+the example above, that the two things in question have no causal relationship at all, and their apparent connection 
+is just a coincidence. Another common variation is the ‘post hoc ergo propter hoc’ (after this, therefore because of 
+this) fallacy in which a causal connection is assumed because one thing happens prior to another thing happening, 
+therefore the second thing must be caused by the first thing. 
+Example: Pointing to a fancy chart, Roger shows how temperatures have been rising over the past 
+few centuries, whilst at the same time the numbers of pirates have been decreasing; thus pirates 
+cool the world and global warming is a hoax.
+ 
+appeal to emotion
+ You attempted to manipulate an emotional response in place of a valid 
+or compelling argument.
+ Appeals to emotion include appeals to fear, envy, hatred, pity, pride, and more. It’s important to note that sometimes 
+a logically coherent argument may inspire emotion or have an emotional aspect, but the problem and fallacy occurs 
+when emotion is used instead of a logical argument, or to obscure the fact that no compelling rational reason  
+exists for one’s position. Everyone, bar sociopaths, is affected by emotion, and so appeals to emotion are a  
+very common and effective argument tactic, but they’re ultimately flawed, dishonest, and tend to  
+make one’s opponents justifiably emotional. 
+Example: Luke’s didn’t want to eat his sheep’s brains with chopped liver and brussel sprouts, but 
+his father told him to think about the poor, starving children in a third world country who weren’t 
+fortunate enough to have any food at all.
+ 
+the fallacy fallacy
+ Presuming that because a claim has been poorly argued, or a fallacy has been made, 
+that it is necessarily wrong.
+ There are few things more frustrating than watching someone poorly argue a position one holds. Much of the time a 
+debate is won not because the victor is right, but because s/he is better at debating than their opponent. If we’re to be 
+honest and rational, we must be mindful to not jump to the conclusion that just because someone made a mistake in 
+their defence of an argument, it doesn’t necessarily follow that the argument itself is wrong. 
+Example: Mr. Moore said that pre-emptively hitting someone was a bad thing to do because you’re 
+an idiot, it’s natural to be a pacifist, and one time his grandfather, who was a Nazi, hit someone, 
+and won’t someone please think of the children?
+ 
+slippery slope
+ You made out like if we allow A to happen, then Z will eventually happen too, 
+therefore A should not happen.
+ The problem with this reasoning is that it avoids engaging with the issue at hand, and instead shifts attention to 
+extreme hypotheticals. Because no proof is presented to show that such extreme hypotheticals will in fact occur, 
+this fallacy has the form of an appeal to emotion fallacy by leveraging fear. In effect the argument at hand is unfairly 
+tainted by unsubstantiated conjecture. 
+Example: Colin Closet asserts that if we allow same-sex couples to marry, then the next thing we 
+know we’ll be allowing people to marry their parents, their cars and Bonobo monkeys.
+ 
+ad hominem
+ You attacked your opponent’s character or personal traits instead of 
+engaging with their argument.
+ Ad hominem attacks can take the form of overtly attacking somebody, or more subtly casting doubt on their 
+character or personal attributes. The desired result of an ad hom attack is to undermine one’s opponent without 
+actually having to engage with their argument or present a compelling argument of one’s own. 
+Example: After Sally presents an eloquent and compelling case for a more equitable taxation 
+system, Sam asks the audience whether we should believe anything from a woman who 
+isn’t married, was once arrested, and smells a bit weird.
+ 
+tu quoque
+ You avoided having to engage with criticism by turning it back on the accuser - you answered criticism with criticism.
+ Literally translating as ‘you too’ this fallacy is commonly employed as an effective red herring because it takes the heat 
+off the accused having to defend themselves and shifts the focus back onto the accuser themselves. The implication 
+is that if one’s opponent also does the thing that they are accused of, then their opponent is a hypocrite.  
+Irrespective of whether this might be true or not, the problem lies in the fact that it is effectively a tactic to  
+avoid recognising and responding to the criticism of one’s argument - by turning it back on the accuser, 
+the accused doesn’t need to answer the accusation. 
+Example: The blue candidate accused the red candidate of committing the tu quoque fallacy. The 
+red candidate responded by accusing the blue candidate of the same, after which ensued an hour 
+of back and forth criticism with not much progress.
+ 
+personal incredulity
+ Because you found something difficult to understand, or are unaware of how it works, 
+you made out like it’s probably not true.
+ Complex subjects like biological evolution through natural selection require some amount of understanding of how 
+they work before one is able to properly grasp them; this fallacy is usually used in place of that understanding. 
+Example: Kirk drew a picture of a fish and a human and with effusive disdain asked Richard if 
+he really thought we were stupid enough to believe that a fish somehow turned into a human 
+through just, like, random things happening over time.
+ 
+special pleading
+ You moved the goalposts or made up an exception when your claim was 
+shown to be false.
+ Humans are funny creatures and have a foolish aversion to being wrong. Rather than appreciate the benefits of 
+being able to change one’s mind through better understanding, many will invent ways to cling to old beliefs. One of 
+the most common ways that people do this is to post-rationalize a reason why what they thought to be true must 
+remain to be true. It’s usually very easy to find a reason to believe something that suits us, and it requires integrity and 
+genuine honesty with oneself to examine one’s own beliefs and motivations without falling into the trap of justifying 
+our existing ways of seeing ourselves and the world around us. 
+Example: Edward Johns claimed to be psychic, but when his ‘abilities’ were tested under proper 
+scientific conditions, they magically disappeared. Edward explained this saying that one had to 
+have faith in his abilities for them to work.
+ 
+loaded question
+ You asked a question that had an assumption built into it so that it couldn’t be 
+answered without appearing guilty.
+ Loaded question fallacies are particularly effective at derailing rational debates because of their inflammatory nature - 
+the recipient of the loaded question is compelled to defend themselves and may appear flustered or on the back foot. 
+Not only is this fallacy a kind of appeal to emotion, it also insidiously frames the argument in a misleading way, like a 
+pre-emptive strawman fallacy. 
+Example: Grace and Helen were both romantically interested in Brad. One day, with Brad  
+sitting within earshot, Grace asked in an inquisitive tone whether Helen was having any 
+problems with a drug habit.
+ 
+burden of proof
+ You said that the burden of proof lies not with the person making the claim, 
+but with someone else to disprove.
+ The burden of proof lies with someone who is making a claim, and is not upon anyone else to prove the negative. 
+The inability, or disinclination, to disprove a claim does not render that claim valid, nor give it any credence 
+whatsoever. The example of not being able to disprove a teapot in orbit serves to illustrate how any claim, no matter 
+how absurd, could be validated if this faulty logic was accepted. 
+Example: Bertrand declares that a teapot is, at this very moment, in orbit around the Sun  
+between the Earth and Mars, and that because no one can prove him wrong, his claim 
+is therefore a valid one.
+ 
+ambiguity
+ You used a double meaning or ambiguity of language to mislead or 
+misrepresent the truth.
+ Politicians are often guilty of using ambiguity to mislead and will later point to how they were technically not outright 
+lying if they come under scrutiny. The reason that it qualifies as a fallacy is that it is intrinsically misleading. 
+Example: When the judge asked the defendant why he hadn’t paid his parking fines, he said that 
+he shouldn’t have to pay them because the sign said ‘Fine for parking here’ and so he naturally 
+presumed that it would be fine to park there.
+ 
+the gambler’s fallacy
+ You said that ‘runs’ occur to statistically independent phenomena such 
+as roulette wheel spins.
+ This commonly believed fallacy can be fairly said to have created an entire city in the desert of Nevada USA. 
+Though the overall odds of a ‘big run’ happening may be low, each spin of the wheel is itself entirely independent 
+from the last. So whilst there may be a very small chance that heads will come up 20 times in a row if you flip a coin, 
+the chances of it happening on each individual flip remain 50/50 and isn’t influenced by what happened before. 
+Example: Red had come up six times in a row on the roulette wheel, so Greg knew that it was close 
+to certain that black would be next up. Suffering a kind of economic form of natural selection with 
+this thinking, he soon lost all of his savings.
+ 
+bandwagon
+ You appealed to popularity or the fact that many people do something as an 
+attempted form of validation.
+ The flaw in this argument is that the popularity of an idea has absolutely no bearing on its validity. If it did, then the 
+Earth would have made itself flat for most of history to accommodate people’s popular belief. 
+Example: Shamus pointed a drunken finger at Sean and asked him to explain how so many people 
+could believe in leprechauns if they’re only a silly old superstition. Sean, however, had had a few 
+too many Guinness himself and fell off his chair.
+ 
+appeal to authority
+ You used the opinion or position of an authority figure, or institution of authority, 
+in place of an actual argument.
+ It is important to note with this fallacy that authorities in given fields may very well have valid arguments, and that 
+one should not dismiss another’s experience and expertise; however, to form an argument one must defend it on its 
+merits i.e. know why the person in authority holds the particular position that they do.  
+It is, of course, entirely possible that the opinion of a person or institution of authority may be entirely wrong; 
+therefore the authority that such a person or institution holds does not have any intrinsic bearing with regard to 
+whether something they say is true or not. 
+Example: Not able to defend his position that evolution ‘isn’t true’ Bob says that he knows a 
+scientist who also questions evolution (and presumably isn’t a primate).
+ 
+composition/division
+ You assumed that one part of something has to be applied to all, or other, parts of it.
+ Often when something is true for the part it does also apply to the whole, but the crucial difference is whether there 
+exists good evidence to show that this is the case. Because we observe consistencies in things, our thinking can 
+become biased so that we presume consistency to exist where it does not. 
+Example: Daniel was a precocious child and had a liking for logic. He reasoned that atoms 
+are invisible, and that he was made of atoms and therefore invisible too. Unfortunately, despite 
+his thinky skills, he lost the game of hide and go seek. 
+
+no true scotsman
+ You made what could be called an appeal to purity as a way to dismiss relevant 
+criticisms or flaws of your argument.
+ In this form of faulty reasoning one’s belief is rendered unfalsifiable because no matter how compelling the evidence 
+is, one simply shifts the goalposts so that it wouldn’t apply to a supposedly ‘true’ example. This kind of 
+post-rationalization is a way of avoiding valid criticisms of one’s argument. 
+Example: Angus declares that Scotsmen do not put sugar on their porridge, to which Lachlan 
+points out that he is a Scotsman and puts sugar on his porridge. Furious, like a true Scot, Angus 
+yells that no true Scotsman sugars his porridge.
+ 
+genetic
+ You judged something as either good or bad on the basis of where it comes from, 
+or from whom it came.
+ This fallacy avoids the argument by shifting focus onto something’s or someone’s origins. It’s similar to an ad 
+hominem fallacy in that it leverages existing negative perceptions to make someone’s argument look bad, without 
+actually presenting a case for why the argument itself lacks merit. 
+Example: Accused on the 6 o’clock news of corruption and taking bribes, the senator said that we 
+should all be very wary of the things we hear in the media, because we all know how 
+very unreliable the media can be.
+ 
+black-or-white
+ You presented two alternative states as the only possibilities, when in fact 
+more possibilities exist.
+ Also known as the false dilemma, this insidious tactic has the appearance of forming a logical argument, but under 
+closer scrutiny it becomes evident that there are more possibilities than the either/or choice that is presented.  
+Binary, black-or-white thinking doesn’t allow for the many different variables, conditions, and contexts in which there 
+would exist more than just the two possibilities put forth. It frames the argument misleadingly and obscures rational, 
+honest debate. 
+Example: Whilst rallying support for his plan to fundamentally undermine citizens’ rights,  
+the Supreme Leader told the people they were either on his side, or they were on the side 
+of the enemy. 
+
+begging the question
+ You presented a circular argument in which the conclusion was included 
+in the premise.
+ This logically incoherent argument often arises in situations where people have an assumption that is very ingrained, 
+and therefore taken in their minds as a given. The problem with this way of thinking is that it is internally inconsistent: 
+circular reasoning is bad mostly because it’s not very good. 
+Example: The word of Zorbo the Great is flawless and perfect. We know this because it says so in 
+The Great and Infallible Book of Zorbo’s Best and Most Truest Things that are Definitely True and 
+Should Not Ever Be Questioned.
+ 
+appeal to nature
+ You argued that because something is ‘natural’ it is therefore valid, justified, 
+inevitable, or ideal.
+ Just because something is natural does not mean that it’s good. For instance murder is very natural, but most 
+of us agree that we don’t think it’s a very good thing to be doing, nor does its ‘naturalness’ constitute any kind of 
+justification for it. Similarly human being have naturally lived for around 30-40 years of age for most of history, 
+but thanks to modern medicine, hygiene, and better understanding of the world around us, we now live for 
+approximately twice as long in developed countries. 
+Example: The medicine man rolled into town on his bandwagon offering various natural remedies, 
+such as very special plain water. He said that it was only natural that people should be wary of 
+‘artificial’ medicines such as antibiotics.
+ 
+anecdotal
+ You used a personal experience or an isolated example instead of a sound argument 
+or compelling evidence.
+ It’s often much easier for people to believe someone’s testimony as opposed to understanding complex data and 
+variation across a continuum. Quantitative scientific measures are almost always more accurate than personal 
+perceptions and experiences, but our inclination is to believe that which is tangible to us, and/or the word of 
+someone we trust over a more ‘abstract’ statistical reality. 
+Example: Jason said that that was all cool and everything, but his grandfather smoked, like, 
+30 cigarettes a day and lived until 97 - so don’t believe everything you read about meta analyses 
+of methodologically sound studies showing proven causal relationships.
+ 
+the texas sharpshooter
+ You cherry-picked a data clusters to suit your argument, or found a pattern 
+to fit a presumption.
+ This ‘false cause’ fallacy is coined after a marksman shooting randomly at barns and then painting bullseye targets 
+around the spot where the most bullet holes appear, making it look appear as if he’s a really good shot. 
+Clusters naturally appear by chance, but don’t necessarily indicate that there is a causal relationship. 
+Example: The makers of Sugarette Candy Drinks point to research showing that of the five 
+countries where Sugarette drinks sell the most units, three of them are in the top ten healthiest 
+countries on Earth, therefore Sugarette drinks are healthy.
+ 
+middle ground
+ You made out like a compromise, or middle point, between two extremes must 
+be the truth. 
+Much of the time the truth does indeed lie between two extreme points, but this can bias our thinking: sometimes a 
+thing is simply untrue and a compromise of it is also untrue. Half way between truth and a lie, is still a lie. 
+Example: Holly said that vaccinations caused autism in children, but her scientifically well-read 
+friend Caleb said that this claim had been debunked and proven false. Their friend Alice offered a 
+compromise that maybe vaccinations cause some autism, just not all autism.
+ 

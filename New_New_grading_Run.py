@@ -212,42 +212,57 @@ class PredictionProcessor:
         for col, width in column_widths.items():
             worksheet.column_dimensions[col].width = width
 
-    def extract_predictions_with_retry(self, article_text, max_retries=3):
-        """Extract predictions with retry logic and better error handling"""
-        system_prompt = """
-        You are a News Prediction Extractor, an expert AI designed to analyze news articles and extract forward-looking statements.
-
-        🔍 DETECTION SCOPE:
-        Identify statements that meet any of these criteria:
-        - **Explicit Predictions**: "is expected to," "will," "is projected to," "analysts forecast"
-        - **Implicit Predictions**: "could lead to," "may result in," "poses a risk of," "signals a trend"
-        - **Quoted Forecasts**: Predictions cited from experts, reports, or institutions
-        - **Future-Tense Declarations**: "will be banned," "will receive," "will increase"
-        - **Contingent Speculation**: "if rates continue to rise, housing demand could plummet"
-
-        ⛔ Do not extract:
-        - Commentary on past events unless explicitly tied to future consequences
-        - Generic opinions or vague guesses
-        - Statements lacking temporal direction
-        - Hypothetical scenarios without a clear predictive element
-        - facts or historical data
-        - Rhetorical questions or speculative musings without a clear prediction
-        - fears are not predictions unless tied to a specific forecast
-
-        For each prediction, provide:
-        1. The exact prediction statement (clear and standalone)
-        2. Verifiability Score (1-5): How measurable the claim is (5 = highly specific and measurable, 1 = vague)
-        3. Certainty Score (1-5): How confident the speaker appears (5 = very confident/definitive, 1 = tentative)
-
-        CRITICAL: Respond ONLY with valid JSON in this exact format:
-        {"predictions": [{"prediction": "exact text here", "verifiability_score": 3, "certainty_score": 5}]}
-        If no predictions are found, return {"predictions": []}
-        """
+    def extract_predictions_with_retry(self, article_text, graded_examples=None, max_retries=3):
+        """Extract predictions using full article examples"""
         
-        user_prompt = f"""Extract all predictions(No restriction on number) from the following article:
-
-        {article_text}""" 
+        # Build comprehensive examples section
+        examples_text = ""
+        if graded_examples:
+            examples_text = "\n\n📚 LEARNING EXAMPLES - These show complete articles and ONLY the predictions that were validated:\n"
+            examples_text += "=" * 80 + "\n"
+            
+            for i, ex in enumerate(graded_examples, 1):
+                examples_text += f"\n### EXAMPLE {i} ###\n"
+                examples_text += f"FULL ARTICLE:\n{ex['article_text'][:1000]}...\n\n"
+                examples_text += f"VALIDATED PREDICTIONS (only {ex['count']} were marked as true predictions):\n"
+                for j, pred in enumerate(ex['validated_predictions'], 1):
+                    examples_text += f"{j}. {pred}\n"
+                examples_text += "\n" + "-" * 80 + "\n"
         
+        system_prompt = f"""
+    You are a News Prediction Extractor. You must learn from the examples below to understand what the user considers a valid prediction.
+
+    {examples_text}
+
+    🎯 KEY LEARNING POINTS:
+    - Study the examples above carefully
+    - Notice what WAS extracted as predictions in the validated examples
+    - Notice what was NOT extracted (everything else in those articles)
+    - Your extractions should match this same pattern and quality level
+
+    🔍 DETECTION CRITERIA:
+    Extract statements that are:
+    - **Explicit Predictions**: "is expected to," "will," "is projected to," "analysts forecast"
+    - **Implicit Predictions**: "could lead to," "may result in," "poses a risk of"
+    - **Quoted Forecasts**: Predictions from experts, reports, or institutions
+    - **Future-Tense Declarations**: "will be banned," "will receive," "will increase"
+
+    ⛔ DO NOT extract (as shown in the examples):
+    - Past events or historical commentary
+    - Generic opinions without future implications
+    - Vague speculation without clear predictions
+    - Rhetorical questions
+    - Fears or concerns unless tied to specific forecasts
+
+    CRITICAL: Respond ONLY with valid JSON:
+    {{"predictions": [{{"prediction": "exact text here", "verifiability_score": 3, "certainty_score": 5}}]}}
+    """
+        
+        user_prompt = f"""Based on the learning examples above, extract all valid predictions from this article:
+
+    {article_text}"""
+        
+        # Rest remains the same as before
         for attempt in range(max_retries):
             try:
                 response = client.chat.completions.create(
@@ -262,20 +277,17 @@ class PredictionProcessor:
                 content = response.choices[0].message.content.strip()
                 result = self.safe_json_parse(content, {"predictions": []})
                 
-                # Validate the result structure
                 if not isinstance(result.get("predictions"), list):
                     raise ValueError("Invalid predictions format")
-                    
+                
                 return result.get("predictions", [])
                 
             except Exception as e:
-                print(f"⚠ Attempt {attempt + 1} failed for prediction extraction: {e}")
+                print(f"⚠ Attempt {attempt + 1} failed: {e}")
                 if attempt < max_retries - 1:
-                    time.sleep(2 ** attempt)  # Exponential backoff
+                    time.sleep(2 ** attempt)
                 else:
-                    print(f"❌ All attempts failed for prediction extraction")
                     return []
-
     def estimate_deadline_with_retry(self, prediction_text, article_date, max_retries=3):
         """Estimate deadline with retry logic"""
         system_prompt = """
@@ -497,7 +509,7 @@ class PredictionProcessor:
             print(f"📄 Processing article {i}...")
             
             # Extract predictions with retry
-            predictions = self.extract_predictions_with_retry(article)
+            predictions = self.extract_predictions_with_retry(article, graded_examples=getattr(self, 'graded_examples', None))
             print(f"  ✅ Found {len(predictions)} predictions")
             
             article_results = []
@@ -727,18 +739,53 @@ class PredictionProcessor:
             traceback.print_exc()
             return df
 
+    def load_graded_examples_full_context(self, graded_file_path, num_examples=455):
+        """Load full articles with your validated predictions"""
+        try:
+            graded_df = pd.read_excel(graded_file_path)
+            
+            # Filter only manually validated predictions (column E = 1)
+            validated = graded_df[graded_df.iloc[:, 4] == 1].copy()
+            
+            # Group by article to get all validated predictions per article
+            examples = []
+            article_groups = validated.groupby('Article_Number')
+            
+            for article_num, group in list(article_groups)[:num_examples]:
+                article_text = group.iloc[0]['Article_Text']
+                validated_predictions = group['Prediction'].tolist()
+                
+                examples.append({
+                    'article_text': article_text,
+                    'validated_predictions': validated_predictions,
+                    'count': len(validated_predictions)
+                })
+            
+            return examples
+        except Exception as e:
+            print(f"Error loading graded examples: {e}")
+            return []
 
 def main():
     processor = PredictionProcessor()
     
     # File paths
     input_file = "news_articlesNov5.xlsx"
-    output_file = "pred_anls_enhanced_with_multinov5.xlsx"
+    graded_file = "Grading_pred_anls_enhanced_with_multinov5.xlsx"  # Your graded file
+    output_file = "pred_anls_with_ALL_learned_grading_.xlsx"
     publication_date = "2025-11-05"
     
     try:
-        # Process articles
-        print("🚀 Starting enhanced processing with context and multi-model verification...")
+        # Load your 31 graded articles as learning examples
+        print("📖 Loading your graded articles as learning examples...")
+        graded_examples = processor.load_graded_examples_full_context(graded_file, num_examples=450)
+        print(f"✅ Loaded {len(graded_examples)} article examples with validated predictions")
+        
+        # Store for use during extraction
+        processor.graded_examples = graded_examples
+        
+        # Process articles with learned knowledge
+        print("🚀 Starting processing with learned examples...")
         result_df = processor.process_articles_from_sheet(input_file, output_file, publication_date)
         
         if result_df is not None:
