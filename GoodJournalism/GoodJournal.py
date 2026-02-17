@@ -21,7 +21,7 @@ NAVIGATOR_BASE_URL = "https://api.ai.it.ufl.edu"
 
 # File Paths
 INPUT_FILE = "Op-Ed_Articles.xlsx"  # Your input file with articles
-OUTPUT_FILE = "journalism_markers_analysis.xlsx"
+OUTPUT_FILE = "journalism_markers_analysis_just8.xlsx"
 CHECKPOINT_FILE = "journalism_analysis_checkpoint.xlsx"
 
 # Processing Settings

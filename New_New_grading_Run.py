@@ -607,7 +607,7 @@ class PredictionProcessor:
         try:
             # Read input file
             df = pd.read_excel(input_file_path)
-            articles = df.iloc[:92:, 4].dropna().tolist()
+            articles = df.iloc[:93:, 4].dropna().tolist()
             print(f"📚 Found {len(articles)} articles to process")
             
             # Prepare for parallel processing
@@ -770,10 +770,10 @@ def main():
     processor = PredictionProcessor()
     
     # File paths
-    input_file = "news_articlesNov5.xlsx"
+    input_file = "new_Scraped_news_20202.xlsx"
     graded_file = "Grading_pred_anls_enhanced_with_multinov5.xlsx"  # Your graded file
-    output_file = "pred_anls_with_ALL_learned_grading_.xlsx"
-    publication_date = "2025-11-05"
+    output_file = "pred_anls_20202_with_ALL_learned_grading_.xlsx"
+    publication_date = "2019-05-13"
     
     try:
         # Load your 31 graded articles as learning examples
