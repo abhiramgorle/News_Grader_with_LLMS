@@ -288,57 +288,68 @@ class PredictionProcessor:
                     time.sleep(2 ** attempt)
                 else:
                     return []
-    def estimate_deadline_with_retry(self, prediction_text, article_date, max_retries=3):
-        """Estimate deadline with retry logic"""
-        system_prompt = """
-        You are a Prediction Analyzer. Your task is to estimate a verification deadline for a given prediction.
+    def estimate_deadline_with_retry(self, prediction_text, prediction_context, article_date, max_retries=3):
+            """Estimate deadline AND validate if it's actually a prediction"""
+            system_prompt = """
+        You are a Prediction Analyzer with two tasks:
+        1. Determine if this is a REAL verifiable prediction about a future outcome
+        2. If yes, estimate when it can be verified
 
-        DEADLINE ESTIMATION:
-        - Identify explicit timeframes in the prediction ("by 2025", "next year", "in five years")
-        - Use common-sense reasoning for implicit timelines (tech releases: 1-2 years, political terms: 4 years)
-        - Your goal is to determine the first reasonable date to check if the prediction came true
+        A REAL prediction must:
+        - Make a specific claim about a future state of the world
+        - Be verifiable (not just opinion or intent)
+        - NOT be: generic "will" statements, character intentions, article narration, instructions
 
         CRITICAL: Respond ONLY with valid JSON:
         {
-            "deadline_estimate": "YYYY-MM-DD",
-            "deadline_reasoning": "Brief explanation of how you determined this deadline"
+        "is_prediction": "YES" | "NO",
+        "deadline_estimate": "YYYY-MM-DD" | "UNKNOWN",
+        "deadline_confidence": 1-5 (1=very uncertain, 5=explicit date given),
+        "rejection_reason": "Brief explanation if NO, otherwise empty string"
         }
         """
-        
-        user_prompt = f"""Estimate the verification deadline for this prediction.
-        
-        Article Publication Date: {article_date}
-        Prediction: "{prediction_text}"
-        """
-        
-        for attempt in range(max_retries):
-            try:
-                response = client.chat.completions.create(
-                    model="gpt-4o",
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": user_prompt}
-                    ],
-                    response_format={"type": "json_object"}
-                )
-                content = response.choices[0].message.content.strip()
-                result = self.safe_json_parse(content, {
-                    "deadline_estimate": "Unknown",
-                    "deadline_reasoning": "Error in processing"
-                })
-                
-                return result
-                
-            except Exception as e:
-                print(f"⚠ Attempt {attempt + 1} failed for deadline estimation: {e}")
-                if attempt < max_retries - 1:
-                    time.sleep(2 ** attempt)
-                else:
-                    return {
-                        "deadline_estimate": "Error",
-                        "deadline_reasoning": f"Failed after {max_retries} attempts: {str(e)}"
-                    }
+            
+            user_prompt = f"""Validate and estimate deadline for this statement.
 
+        Article Publication Date: {article_date}
+        Statement: "{prediction_text}"
+        Context: "{prediction_context}"
+
+        Is this a real, verifiable prediction? If yes, when can we check it?
+        """
+            
+            for attempt in range(max_retries):
+                try:
+                    response = client.chat.completions.create(
+                        model="gpt-4o",
+                        messages=[
+                            {"role": "system", "content": system_prompt},
+                            {"role": "user", "content": user_prompt}
+                        ],
+                        response_format={"type": "json_object"}
+                    )
+                    content = response.choices[0].message.content.strip()
+                    result = self.safe_json_parse(content, {
+                        "is_prediction": "NO",
+                        "deadline_estimate": "UNKNOWN",
+                        "deadline_confidence": 1,
+                        "rejection_reason": "Parse error"
+                    })
+                    
+                    return result
+                    
+                except Exception as e:
+                    print(f"⚠ Attempt {attempt + 1} failed for deadline estimation: {e}")
+                    if attempt < max_retries - 1:
+                        time.sleep(2 ** attempt)
+                    else:
+                        return {
+                            "is_prediction": "NO",
+                            "deadline_estimate": "ERROR",
+                            "deadline_confidence": 0,
+                            "rejection_reason": f"Failed after {max_retries} attempts"
+                        }
+            
     def grade_prediction_with_retry(self, prediction_text, prediction_context, max_retries=3):
         """Grade prediction with retry logic"""
         system_prompt = """
@@ -520,7 +531,7 @@ class PredictionProcessor:
                         prediction_text = pred.get('prediction', '')
                         if not prediction_text:
                             continue
-                            
+                        
                         print(f"    🔍 Analyzing prediction {j+1}...")
                         
                         # Extract context around prediction
@@ -528,34 +539,46 @@ class PredictionProcessor:
                             article, prediction_text
                         )
                         
-                        # Estimate deadline
+                        # BACKTRACKING FILTER: Validate + estimate deadline together
                         deadline_info = self.estimate_deadline_with_retry(
-                            prediction_text, publication_date
+                            prediction_text, 
+                            prediction_context,  # Pass context too
+                            publication_date
                         )
                         
+                        # 🚨 FILTER: Reject if validation fails
+                        if deadline_info.get('is_prediction') == 'NO':
+                            print(f"    ❌ REJECTED: {deadline_info.get('rejection_reason', 'Not a prediction')}")
+                            continue  # Skip this candidate entirely
+                        
+                        if deadline_info.get('deadline_confidence', 0) < 2:
+                            print(f"    ⚠ REJECTED: Low confidence deadline")
+                            continue  # Skip low-confidence predictions
+                        
+                        # Only store if it passed validation
                         result = {
                             'Article_Number': i,
                             'Article_Text': article,
                             'Prediction_Number': j + 1,
                             'Prediction': prediction_text,
-                            'Prediction_Context': prediction_context,  # New field
+                            'Prediction_Context': prediction_context,
                             'Verifiability_Score': pred.get('verifiability_score', 0),
                             'Certainty_Score': pred.get('certainty_score', 0),
                             'Deadline_Estimate': deadline_info.get('deadline_estimate', 'Unknown'),
-                            'Deadline_Reasoning': deadline_info.get('deadline_reasoning', 'Not provided'),
+                            'Deadline_Reasoning': deadline_info.get('rejection_reason', '') or deadline_info.get('deadline_reasoning', 'Validated'),
+                            'Deadline_Confidence': deadline_info.get('deadline_confidence', 0),  # NEW COLUMN
                             'Grading': 'Pending',
                             'Grading_Justification': 'Deadline not yet reached',
                             'Claude_Agrees': 'Pending',
                             'Claude_Additional_Context': 'Not yet reviewed',
-                            'Gemini_Agrees': 'Pending',  # New field
-                            'Gemini_Additional_Context': 'Not yet reviewed'  # New field
+                            'Gemini_Agrees': 'Pending',
+                            'Gemini_Additional_Context': 'Not yet reviewed'
                         }
                         
                         article_results.append(result)
                         
                     except Exception as e:
                         print(f"    ❌ Error processing prediction {j+1}: {e}")
-                        # Continue with next prediction instead of failing entirely
                         continue
             else:
                 # No predictions found
@@ -607,7 +630,7 @@ class PredictionProcessor:
         try:
             # Read input file
             df = pd.read_excel(input_file_path)
-            articles = df.iloc[:93:, 4].dropna().tolist()
+            articles = df.iloc[:100:, 4].dropna().tolist()
             print(f"📚 Found {len(articles)} articles to process")
             
             # Prepare for parallel processing
@@ -772,8 +795,8 @@ def main():
     # File paths
     input_file = "new_Scraped_news_20202.xlsx"
     graded_file = "Grading_pred_anls_enhanced_with_multinov5.xlsx"  # Your graded file
-    output_file = "pred_anls_20202_with_ALL_learned_grading_.xlsx"
-    publication_date = "2019-05-13"
+    output_file = "pred_anls_20202_backtracking.xlsx"
+    publication_date = "2020-05-13"
     
     try:
         # Load your 31 graded articles as learning examples
