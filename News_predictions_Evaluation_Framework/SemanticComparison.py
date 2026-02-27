@@ -912,14 +912,14 @@ if __name__ == "__main__":
     Uses environment variable 'navigator_api' for the API key.
     """
     GOLD_FILE   = "Grading_pred_anls_enhanced_with_multinov5.xlsx"
-    SYSTEM_FILE = "pred_anls_nov5_backtracking.xlsx"
+    SYSTEM_FILE = "pred_anls_nov5_backtrackingComplete.xlsx"
 
     comparator = SemanticComparator(gold_file=GOLD_FILE)
 
     report = comparator.compare(
         system_file = SYSTEM_FILE,
-        run_label   = "Finetuned with Backtracking Model (pred_anls_20202)"
+        run_label   = "Finetuned with Backtracking Model all articles (pred_anls_20202)"
     )
 
     comparator.print_report(report)
-    comparator.save_report(report, output_prefix="finetuned_backtracking")
+    comparator.save_report(report, output_prefix="finetuned_backtracking_all")

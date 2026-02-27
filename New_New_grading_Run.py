@@ -580,6 +580,25 @@ class PredictionProcessor:
                     except Exception as e:
                         print(f"    ❌ Error processing prediction {j+1}: {e}")
                         continue
+                if not article_results:
+                    article_results.append({
+                        'Article_Number': i,
+                        'Article_Text': article,
+                        'Prediction_Number': 0,
+                        'Prediction': 'All predictions rejected by backtracking filter',
+                        'Prediction_Context': 'N/A',
+                        'Verifiability_Score': 0,
+                        'Certainty_Score': 0,
+                        'Deadline_Estimate': 'N/A',
+                        'Deadline_Reasoning': 'Predictions found but rejected during validation',
+                        'Deadline_Confidence': 0,
+                        'Grading': 'N/A',
+                        'Grading_Justification': 'No valid predictions after filtering',
+                        'Claude_Agrees': 'N/A',
+                        'Claude_Additional_Context': 'No predictions to review',
+                        'Gemini_Agrees': 'N/A',
+                        'Gemini_Additional_Context': 'No predictions to review'
+                    })
             else:
                 # No predictions found
                 article_results.append({
@@ -793,10 +812,10 @@ def main():
     processor = PredictionProcessor()
     
     # File paths
-    input_file = "new_Scraped_news_20202.xlsx"
+    input_file = "news_articlesNov5.xlsx"
     graded_file = "Grading_pred_anls_enhanced_with_multinov5.xlsx"  # Your graded file
-    output_file = "pred_anls_20202_backtracking.xlsx"
-    publication_date = "2020-05-13"
+    output_file = "pred_anls_nov5_backtrackingComplete.xlsx"
+    publication_date = "2025-11-05"
     
     try:
         # Load your 31 graded articles as learning examples
