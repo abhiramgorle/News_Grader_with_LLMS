@@ -205,7 +205,7 @@ def process_article(article_text, year_of_article, primary_model):
         st.warning("No predictions found in this article.")
         return pd.DataFrame()
 
-    st.info(f"Found {len(predictions)} potential predictions. Validatin(Backtracking) and grading...")
+    st.info(f"Found {len(predictions)} potential predictions. Validating(through Backtracking) and grading...")
     progress_bar = st.progress(0)
 
     for i, pred in enumerate(predictions):
