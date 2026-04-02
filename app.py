@@ -285,7 +285,7 @@ def main():
                     news_article = extracted_text
 
     type_of_llm = st.selectbox("Select type of LLM you want to use", ["OpenAI GPT-4", "Google Gemini"])
-    year_of_article = st.selectbox("Select the year of the article", ["2024", "2023", "2022", "2021", "2020"])
+    year_of_article = st.selectbox("Select the year of the article", ["2026","2025","2024", "2023", "2022", "2021", "2020"])
 
     primary_model = "gpt-5" if type_of_llm == "OpenAI GPT-4" else "gemini-2.5-pro"
 
