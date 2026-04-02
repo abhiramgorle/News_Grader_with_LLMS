@@ -517,7 +517,7 @@ class PredictionProcessor:
 
     def process_single_article(self, article_data):
         """Process a single article with comprehensive error handling"""
-        i, article, publication_date = article_data
+        i, article, article_link, article_date = article_data
         
         try:
             print(f"📄 Processing article {i}...")
@@ -545,26 +545,28 @@ class PredictionProcessor:
                         # BACKTRACKING FILTER: Validate + estimate deadline together
                         deadline_info = self.estimate_deadline_with_retry(
                             prediction_text, 
-                            prediction_context,  # Pass context too
-                            publication_date
+                            prediction_context,
+                            article_date
                         )
                         
                         # 🚨 FILTER: Reject if validation fails
                         if deadline_info.get('is_prediction') == 'NO':
                             verif_score = pred.get('verifiability_score', 0)
                             cert_score = pred.get('certainty_score', 0)
-                            if verif_score < 3 or cert_score < 3:  # Only reject if BOTH extraction scores are also low
+                            if verif_score < 3 or cert_score < 3:
                                 print(f"    ❌ REJECTED: {deadline_info.get('rejection_reason', 'Not a prediction')}")
                                 continue
                             print(f"    ⚠ Borderline kept (high extraction scores): {prediction_text[:60]}")
                         
                         if deadline_info.get('deadline_confidence', 0) < 1:
                             print(f"    ⚠ REJECTED: Low confidence deadline")
-                            continue  # Skip low-confidence predictions
+                            continue
                         
                         # Only store if it passed validation
                         result = {
                             'Article_Number': i,
+                            'Article_Link': article_link,
+                            'Article_Date': article_date,
                             'Article_Text': article,
                             'Prediction_Number': j + 1,
                             'Prediction': prediction_text,
@@ -573,7 +575,7 @@ class PredictionProcessor:
                             'Certainty_Score': pred.get('certainty_score', 0),
                             'Deadline_Estimate': deadline_info.get('deadline_estimate', 'Unknown'),
                             'Deadline_Reasoning': deadline_info.get('rejection_reason', '') or deadline_info.get('deadline_reasoning', 'Validated'),
-                            'Deadline_Confidence': deadline_info.get('deadline_confidence', 0),  # NEW COLUMN
+                            'Deadline_Confidence': deadline_info.get('deadline_confidence', 0),
                             'Grading': 'Pending',
                             'Grading_Justification': 'Deadline not yet reached',
                             'Claude_Agrees': 'Pending',
@@ -590,6 +592,8 @@ class PredictionProcessor:
                 if not article_results:
                     article_results.append({
                         'Article_Number': i,
+                        'Article_Link': article_link,
+                        'Article_Date': article_date,
                         'Article_Text': article,
                         'Prediction_Number': 0,
                         'Prediction': 'All predictions rejected by backtracking filter',
@@ -610,6 +614,8 @@ class PredictionProcessor:
                 # No predictions found
                 article_results.append({
                     'Article_Number': i,
+                    'Article_Link': article_link,
+                    'Article_Date': article_date,
                     'Article_Text': article,
                     'Prediction_Number': 0,
                     'Prediction': 'No predictions found',
@@ -635,6 +641,8 @@ class PredictionProcessor:
             # Return error record instead of failing completely
             return [{
                 'Article_Number': i,
+                'Article_Link': article_link,
+                'Article_Date': article_date,
                 'Article_Text': f"Error processing article: {str(e)}",
                 'Prediction_Number': -1,
                 'Prediction': 'Processing failed',
@@ -656,11 +664,22 @@ class PredictionProcessor:
         try:
             # Read input file
             df = pd.read_excel(input_file_path)
-            articles = df.iloc[:100:, 4].dropna().tolist()
+            print(f"📚 Input columns: {df.columns.tolist()}")
+            
+            # Extract articles, links, and dates from new 3-column format
+            # Assuming columns are: Article Link, Article Date, Article Content
+            articles = df.iloc[:, 2].dropna().tolist()  # Article Content (column 3)
+            links = df.iloc[:, 0].dropna().tolist()     # Article Link (column 1)
+            dates = df.iloc[:, 1].dropna().tolist()     # Article Date (column 2)
+            
             print(f"📚 Found {len(articles)} articles to process")
             
             # Prepare for parallel processing
-            article_data = [(i, article, publication_date) for i, article in enumerate(articles, 1)]
+            article_data = [
+                (i, article, links[i] if i < len(links) else "N/A", 
+                 dates[i] if i < len(dates) else publication_date) 
+                for i, article in enumerate(articles, 1)
+            ]
             output_data = []
             
             # Process articles with controlled parallelism
@@ -686,6 +705,8 @@ class PredictionProcessor:
                         print(f"⏰ Timeout for article {article_num}")
                         output_data.append({
                             'Article_Number': article_num,
+                            'Article_Link': article_data[article_num-1][2],
+                            'Article_Date': article_data[article_num-1][3],
                             'Article_Text': 'Timeout during processing',
                             'Prediction_Number': -1,
                             'Prediction': 'Timeout error',
@@ -826,15 +847,15 @@ def main():
     processor = PredictionProcessor()
     
     # File paths
-    input_file = "news_articlesNov5.xlsx"
+    input_file = "Opinion_Editorials.xlsx"
     graded_file = "Grading_pred_anls_enhanced_with_multinov5.xlsx"  # Your graded file
-    output_file = "pred_anls_nov5_backtrackingLessScrutiny8examples.xlsx"
-    publication_date = "2025-11-05"
+    output_file = "pred_anls_Opeds_backtrackingLessScrutinyAllexamples.xlsx"
+    publication_date = "2025-10-25"
     
     try:
         # Load your 31 graded articles as learning examples
         print("📖 Loading your graded articles as learning examples...")
-        graded_examples, rejected_examples = processor.load_graded_examples_full_context(graded_file, num_examples=8)
+        graded_examples, rejected_examples = processor.load_graded_examples_full_context(graded_file, num_examples=455)
         processor.graded_examples = graded_examples
         processor.rejected_examples = rejected_examples
         print(f"✅ Loaded {len(graded_examples)} article examples with validated predictions")

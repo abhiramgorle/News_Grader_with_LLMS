@@ -1,0 +1,150 @@
+{
+  "run_label": "Finetuned with two stage",
+  "generated_at": "2026-02-27T08:00:32.733193",
+  "gold_file": "Grading_pred_anls_enhanced_with_multinov5.xlsx",
+  "system_file": "prediction_anls_nov5_two_stage_extraction.xlsx",
+  "gold_articles": 37,
+  "gold_predictions": 86,
+  "system_articles": 6,
+  "system_predictions": 8,
+  "shared_articles": 4,
+  "gold_in_shared": 13,
+  "system_in_shared": 6,
+  "gold_avg_per_article": 3.25,
+  "system_avg_per_article": 1.5,
+  "over_extraction_ratio": 0.46153846153846156,
+  "threshold_metrics": [
+    {
+      "threshold": 0.7,
+      "true_positives": 3,
+      "false_positives": 3,
+      "false_negatives": 10,
+      "precision": 0.5,
+      "recall": 0.2308,
+      "f1": 0.3158
+    },
+    {
+      "threshold": 0.75,
+      "true_positives": 2,
+      "false_positives": 4,
+      "false_negatives": 11,
+      "precision": 0.3333,
+      "recall": 0.1538,
+      "f1": 0.2105
+    },
+    {
+      "threshold": 0.8,
+      "true_positives": 2,
+      "false_positives": 4,
+      "false_negatives": 11,
+      "precision": 0.3333,
+      "recall": 0.1538,
+      "f1": 0.2105
+    },
+    {
+      "threshold": 0.85,
+      "true_positives": 2,
+      "false_positives": 4,
+      "false_negatives": 11,
+      "precision": 0.3333,
+      "recall": 0.1538,
+      "f1": 0.2105
+    },
+    {
+      "threshold": 0.9,
+      "true_positives": 2,
+      "false_positives": 4,
+      "false_negatives": 11,
+      "precision": 0.3333,
+      "recall": 0.1538,
+      "f1": 0.2105
+    }
+  ],
+  "primary_threshold": 0.8,
+  "primary_precision": 0.3333,
+  "primary_recall": 0.1538,
+  "primary_f1": 0.2105,
+  "primary_tp": 2,
+  "primary_fp": 4,
+  "primary_fn": 11,
+  "matched_pairs": [
+    {
+      "article_number": 22,
+      "gold_text": "A switch to the chained CPI would reduce the program's shortfall by 14%",
+      "system_text": "A switch to the chained CPI would reduce the program's shortfall by 14%",
+      "similarity": 1.0,
+      "gold_verif": 5.0,
+      "system_verif": 1.0,
+      "gold_certainty": 4.0,
+      "system_certainty": 1.0,
+      "gold_grading": "Pending",
+      "system_grading": "PENDING"
+    },
+    {
+      "article_number": 22,
+      "gold_text": "The trust fund the program relies on to pay retirement benefits may run out in 2032, according to the Social Security Administration's latest projections based on changes in the \"\"big beautiful\"\" legislation Congress passed in July.",
+      "system_text": "The trust fund the program relies on to pay retirement benefits may run out in 2032, according to the Social Security Administration's latest projections based on changes in the \"\"big beautiful\"\" legislation Congress passed in July.",
+      "similarity": 1.0,
+      "gold_verif": 5.0,
+      "system_verif": 1.0,
+      "gold_certainty": 2.0,
+      "system_certainty": 1.0,
+      "gold_grading": "Pending",
+      "system_grading": "PENDING"
+    }
+  ],
+  "avg_similarity_matched": 1.0,
+  "gold_avg_verif": 5.0,
+  "system_avg_verif": 1.0,
+  "verif_score_delta": -4.0,
+  "gold_avg_certainty": 3.0,
+  "system_avg_certainty": 1.0,
+  "certainty_score_delta": -2.0,
+  "per_article_results": [
+    {
+      "article_number": 9,
+      "gold_count": 1,
+      "system_count": 1,
+      "true_positives": 0,
+      "false_positives": 1,
+      "false_negatives": 1,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0
+    },
+    {
+      "article_number": 16,
+      "gold_count": 2,
+      "system_count": 1,
+      "true_positives": 0,
+      "false_positives": 1,
+      "false_negatives": 2,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0
+    },
+    {
+      "article_number": 20,
+      "gold_count": 4,
+      "system_count": 1,
+      "true_positives": 0,
+      "false_positives": 1,
+      "false_negatives": 4,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0
+    },
+    {
+      "article_number": 22,
+      "gold_count": 6,
+      "system_count": 3,
+      "true_positives": 2,
+      "false_positives": 1,
+      "false_negatives": 4,
+      "precision": 0.6667,
+      "recall": 0.3333,
+      "f1": 0.4444
+    }
+  ],
+  "verdict": "\u2705 Extraction count is close to human benchmark (0.5x over-extraction). | \u274c Low recall (15.4%) \u2014 model misses many human-validated predictions. | \u26a0 Low precision (33.3%) \u2014 many system predictions have no gold equivalent. | \u26a0 Verifiability scores dropped by -4.00 on matched predictions."
+}
