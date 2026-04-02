@@ -197,13 +197,14 @@ def process_article(article_text, year_of_article, primary_model):
     article_date = f"{year_of_article}-01-01"
     current_date = date.today()
     results = []
+    rejected = []
 
     with st.spinner("Extracting predictions..."):
         predictions = extract_predictions(article_text, primary_model)
 
     if not predictions:
         st.warning("No predictions found in this article.")
-        return pd.DataFrame()
+        return pd.DataFrame(), []
 
     st.info(f"Found {len(predictions)} potential predictions. Validating(through Backtracking) and grading...")
     progress_bar = st.progress(0)
@@ -217,6 +218,10 @@ def process_article(article_text, year_of_article, primary_model):
         deadline_info = validate_and_estimate_deadline(prediction_text, article_date)
 
         if deadline_info.get('is_prediction') == 'NO':
+            rejected.append({
+                'Prediction': prediction_text,
+                'Reason': deadline_info.get('rejection_reason', 'Not a verifiable prediction')
+            })
             progress_bar.progress((i + 1) / len(predictions))
             continue
 
@@ -260,7 +265,7 @@ def process_article(article_text, year_of_article, primary_model):
         results.append(result)
         progress_bar.progress((i + 1) / len(predictions))
 
-    return pd.DataFrame(results)
+    return pd.DataFrame(results), rejected
 
 
 def main():
@@ -297,11 +302,15 @@ def main():
             st.error("Please provide an article text or URL first.")
             return
 
-        result_df = process_article(news_article, year_of_article, primary_model)
+        result_df, rejected = process_article(news_article, year_of_article, primary_model)
 
         if not result_df.empty:
             st.write("### Predictions Analysis")
             st.dataframe(result_df, use_container_width=True)
+
+        if rejected:
+            with st.expander(f"Predictions removed by backtracking filter ({len(rejected)})"):
+                st.dataframe(pd.DataFrame(rejected), use_container_width=True)
 
 
 if __name__ == "__main__":
